@@ -184,7 +184,7 @@ class SimpleRESTServer(BaseHTTPRequestHandler):
 def run(server_class=HTTPServer, handler_class=SimpleRESTServer, port=8000):
     """Start the HTTP server."""
     # Get port from environment variable, fallback to default
-    port = int(os.environ.get('SERVER_PORT', port))
+    port = int(os.getenv("PORT", os.getenv("SERVER_PORT", 8000)))
 
     socketserver.TCPServer.allow_reuse_address = True
     server_address = ('', port)
