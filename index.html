@@ -30,16 +30,23 @@
             gap: 10px;
         }
         .message {
-            margin: 8px 0;
-            padding: 8px;
-            border-radius: 4px;
+            max-width: 75%;
+            margin: 10px 0;
+            padding: 10px 14px;
+            border-radius: 12px;
             white-space: pre-wrap;
+            word-wrap: break-word;
         }
         .user {
-            background-color: #e6f3ff;
+            background-color: #0b5ed7;
+            color: white;
+            margin-left: auto;
+            text-align: left;
         }
         .model {
-            background-color: #f0f0f0;
+            background-color: #e9ecef;
+            color: black;
+            margin-right: auto;
         }
         input[type="text"] {
             width: 100%;
@@ -70,15 +77,58 @@
             font-size: 0.9rem;
             margin-top: 5px;
         }
+        #header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        body.dark {
+        background-color: #121212;
+        color: white;
+        }
+
+        body.dark #chat-history {
+            background-color: #1e1e1e;
+            border-color: #444;
+        }
+
+        body.dark .user {
+            background-color: #0d47a1;
+            color: white;
+        }
+
+        body.dark .model {
+            background-color: #333;
+            color: white;
+        }
+
+        body.dark input {
+            background-color: #222;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        body.dark button {
+            background-color: #444;
+        }
+
+        body.dark button:hover {
+            background-color: #666;
+        }
     </style>
 </head>
 <body>
-    <h1>Chatbot</h1>
+    <div id= "header">
+        <h1>Chatbot</h1>
+        <button id="theme-toggle" onclick="toggleTheme()">🌙 </button>
+    </div>
     <div id="chat-history"></div>
     <input type="text" id="message-input" placeholder="Type your message..." aria-label="Message input">
     <div id="control-panel">
         <button id="send-button" onclick="sendMessage()" aria-label="Send message">Send</button>
         <button id="reset-button" onclick="resetChat()" aria-label="Reset chat">Reset Chat</button>
+        <button onclick="downloadChat()">Download Chat</button>
     </div>
     <div id="status"></div>
 
@@ -101,10 +151,38 @@
                 .forEach(msg => {
                     const div = document.createElement('div');
                     div.className = `message ${msg.role}`;
-                    div.textContent = `${msg.role}: ${msg.parts[0].text}`;
+
+                    const text = document.createElement("div");
+                    text.textContent = `${msg.role}: ${msg.parts[0].text}`;
+                    const time = document.createElement("small");
+                    time.style.display = "block";
+                    time.style.marginTop = "5px";
+                    time.style.opacity = "0.7";
+                    time.textContent = new Date().toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit"
+                    });
+                    div.appendChild(text);
+                    div.appendChild(time);
+
+                    if (msg.role === "model") {
+                        const copyBtn = document.createElement("button");
+                        copyBtn.textContent = "📋 Copy";
+                        copyBtn.style.marginTop = "8px";
+
+                        copyBtn.onclick = async () => {
+                            await navigator.clipboard.writeText(msg.parts[0].text);
+                            copyBtn.textContent = "✅ Copied";
+                            setTimeout(() => {
+                                copyBtn.textContent = "📋 Copy";
+                            }, 1500);
+                        };
+
+                        div.appendChild(copyBtn);
+                    }
                     chatHistory.appendChild(div);
-                    chatHistory.scrollTop = chatHistory.scrollHeight;
                 });
+                chatHistory.scrollTop = chatHistory.scrollHeight;
                 setStatus('');
             } catch (error) {
                 setStatus('Error: Could not load messages. Is the server running?');
@@ -123,7 +201,7 @@
             input.disabled = true;
             document.getElementById('send-button').disabled = true;
             document.getElementById('reset-button').disabled = true;
-            setStatus('Sending...');
+            setStatus('🤖 Gemini is thinking...');
 
             try {
                 const response = await fetch('/chat', {
@@ -134,17 +212,21 @@
                 if (!response.ok) throw new Error('Failed to send message');
                 input.value = '';
                 await fetchMessages();
+                document.getElementById("chat-history").scrollTop = document.getElementById("chat-history").scrollHeight;
             } catch (error) {
                 setStatus('Error: Could not send message. Try again.');
             } finally {
                 input.disabled = false;
                 document.getElementById('send-button').disabled = false;
                 document.getElementById('reset-button').disabled = false;
+                setStatus('');
             }
         }
 
         // Reset chat history
         async function resetChat() {
+            const confirmReset = confirm("Are you sure you want to clear the chat?");
+             if (!confirmReset) return;
             try {
                 const response = await fetch('/messages', { method: 'DELETE' });
                 if (!response.ok) throw new Error('Failed to reset chat');
@@ -152,6 +234,39 @@
                 setStatus('Chat history cleared.');
             } catch (error) {
                 setStatus('Error: Could not reset chat. Try again.');
+            }
+        }
+
+        // Download chat
+        function downloadChat() {
+            const messages = document.querySelectorAll(".message");
+            let content = "";
+
+            messages.forEach(message => {
+                content += message.innerText + "\n\n";
+            });
+
+            const blob = new Blob([content], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "chat-history.txt";
+            a.click();
+
+            URL.revokeObjectURL(url);
+        }
+
+        // Dark mode
+        function toggleTheme() {
+            document.body.classList.toggle("dark");
+
+            const btn = document.getElementById("theme-toggle");
+
+            if (document.body.classList.contains("dark")) {
+                btn.textContent = "☀️";
+            } else {
+                btn.textContent = "🌙";
             }
         }
 
