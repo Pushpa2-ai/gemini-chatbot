@@ -190,7 +190,7 @@ def run(server_class=HTTPServer, handler_class=SimpleRESTServer, port=8000):
     server_address = ('', port)
     try:
         httpd = server_class(server_address, handler_class)
-        print(f'Starting server on http://localhost:{port}/...')
+        print(f"Server running on port {port}")
         httpd.serve_forever()
     except OSError as e:
         print(f"Error: Could not start server on port {port}: {e}")
