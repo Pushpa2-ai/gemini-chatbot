@@ -1,270 +1,783 @@
-# python-chatbot-server
+# 🤖 Gemini Chatbot
 
-A simple **RESTful chatbot API server** built with Python and [Google’s Gemini API](https://ai.google.dev/gemini-api/docs), designed as an easy-to-follow example for beginners learning Gemini API. It can integrate with frontends like React or Flutter and includes a basic web interface for quick testing. For those who may not have an API key, the server includes a fallback to mock responses.
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)
+![Google Gemini](https://img.shields.io/badge/Google-Gemini%202.5%20Flash-4285F4?style=for-the-badge&logo=google)
+![REST API](https://img.shields.io/badge/REST-API-green?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Active-success?style=for-the-badge)
+
+A modern AI-powered chatbot built using **Python**, **Google Gemini API**, and a lightweight **REST API** architecture. The project provides a clean web interface for chatting with Google's Gemini model while exposing REST endpoints that can easily integrate with React, Flutter, mobile applications, or any frontend capable of making HTTP requests.
+
+Unlike the original project, this version includes multiple UI and usability enhancements such as Dark Mode, ChatGPT-style chat bubbles, copy response functionality, conversation download, timestamps, and an improved user experience.
 
 ---
 
-Pythonと[GoogleのGemini API](https://ai.google.dev/gemini-api/docs)を使って作られたシンプルな**RESTfulチャットボットAPIサーバー**です。Gemini APIを学ぶ初心者のための分かりやすい例として設計されています。ReactやFlutterのようなフロントエンドと統合でき、素早いテスト用に基本的なウェブインターフェースも含まれています。APIキーを持っていない人のために、モックレスポンスへのフォールバック機能も備えています。
+# ✨ Features
 
-## Get Started
+## 🤖 AI Chat
 
-Follow these steps to run the chatbot server and try it out:
+- Google Gemini 2.5 Flash integration
+- REST API architecture
+- Multi-turn conversations
+- Mock responses when no API key is provided
+- Lightweight Python backend
+- Beginner-friendly project structure
 
-1. **Clone the repository**:
-  ```sh
-  git clone https://github.com/supershaneski/python-chatbot-server.git
+---
 
-  cd python-chatbot-server
-  ```
+## 🎨 Enhanced User Interface
 
-2. **Set up a virtual environment** (optional but recommended):
-  ```sh
-  python3 -m venv venv
-  ```
-  Activate it:
-  ```sh
-  source venv/bin/activate  # Linux/macOS
-  # or
-  venv\Scripts\activate     # Windows
-  ```
-  > [!NOTE]  
-  > Depending on your system, you can use `python` instead of `python3` for all commands.
+Compared to the original project, the following improvements have been added:
 
-3. **Install dependencies** (only needed for Gemini API integration):
-  ```sh
-  pip install -r requirements.txt
-  ```
-  > [!NOTE]  
-  > The `requirements.txt` specifies `google-genai==1.32.0` to ensure compatibility with the [Gemini API](https://ai.google.dev/gemini-api/docs/quickstart#install-gemini-library). Other dependencies are installed automatically by `pip`.
+- 🌙 Dark Mode
+- 💬 ChatGPT-style chat bubbles
+- 📋 Copy AI response with one click
+- ⏳ "Gemini is thinking..." status indicator
+- 📥 Download complete chat history (.txt)
+- 🕒 Timestamp for every message
+- 📜 Automatic scrolling to the latest message
+- ⚡ Cleaner and more responsive interface
 
-4. **Set up the environment file**:
-   Copy the example file:
-   ```sh
-   cp .env.example .env  # Linux/macOS
-   # or
-   copy .env.example .env  # Windows
-   ```
-   Edit `.env` with a text editor and add your Gemini API key (optional):
-   ```txt
-   SERVER_PORT=8000
-   GEMINI_API_KEY=your_actual_api_key_here
-   ```
-   If you don’t have an API key, leave `GEMINI_API_KEY` blank to use mock responses.
+---
 
-5. **Run the server**:
-  
-   ```sh
-   python3 server.py # normal chat
-   # or
-   python3 server_function_calling.py # chat with function calling
-   ```
+# 📸 Screenshots
 
-6. **Try it out**:
-   - Open your browser to `http://localhost:8000/` to use the web interface.
-   - Type a message (e.g., “Hello”) and press Enter or click **Send**.
-   - Click **Reset Chat** to clear the conversation.
-   - Alternatively, use `curl` to test the API:
-     ```sh
-     curl -X POST -H "Content-Type: application/json" -d '{"text":"Hello"}' http://localhost:8000/chat
-     curl http://localhost:8000/messages
-     ```
+> Add screenshots after uploading them.
 
-7. **Stop the server**:
-   Press `Ctrl+C` in the terminal.
+### Home Page
 
-8. **Exit the virtual environment** (if used):
-   ```sh
-   deactivate
-   ```
+```
+images/home.png
+```
 
-## Endpoints
+---
 
-- `POST /chat`: Send a user message to the chatbot.
-  - Example: `curl -X POST -H "Content-Type: application/json" -d '{"text":"Hello"}' http://localhost:8000/chat`
-- `GET /messages`: Retrieve the full conversation history.
-  - Example: `curl http://localhost:8000/messages`
-- `DELETE /messages`: Delete all messages to reset the chat.
-  - Example: `curl -X DELETE http://localhost:8000/messages`
+### Dark Mode
 
-> [!TIP]  
-> You can view the conversation history by typing `http://localhost:8000/messages` in your browser’s address bar.
+```
+images/dark-mode.png
+```
 
-This server acts as a RESTful API backend, allowing you to integrate the chatbot with various applications, such as web apps, mobile apps, or desktop clients. We provide a simple web interface at `http://localhost:8000/` to get you started, but you can build your own frontend using any technology that supports HTTP requests (e.g., JavaScript, React, Vue, Angular, Flutter, or React Native + Expo). 
+---
 
-For example:
-- Create a web app with React or Vue to send messages to `/chat` and display responses from `/messages`.
-- Build a mobile app with Flutter or React Native to interact with the chatbot.
-- Use tools like Postman or `curl` to test the API directly.
+### Chat Conversation
 
-To integrate with your app, make HTTP requests to the endpoints above using your preferred programming language or framework. The server handles the chatbot logic, so your app only needs to send and receive JSON data.
+```
+images/chat.png
+```
 
-### Usage
+---
 
-Below are JavaScript examples showing how to interact with the API. These work in a browser (e.g., with a React or Vue app) or in Node.js (using a package like `node-fetch`). Use `http://localhost:8000` for local testing or replace it with your server’s IP address (e.g., `http://192.168.1.100:8000`) for access from other devices. See the [Web Interface](#web-interface) section for how to find your IP address.
+# 🚀 Tech Stack
 
-```javascript
-// Send a message to the chatbot
-async function sendMessage(text) {
-  try {
-    const response = await fetch('http://localhost:8000/chat', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ text })
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to send message: HTTP ${response.status}`);
-    }
-    const result = await response.json();
-    console.log(result); // Model reply: { id: 2, role: "model", parts: [{ text: "..." }] }
-  } catch (e) {
-    console.error('Error sending message to /chat:', e);
-  }
-}
+## Backend
 
-// Get all conversation messages
-async function getAllMessages() {
-  try {
-    const response = await fetch('http://localhost:8000/messages');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch messages: HTTP ${response.status}`);
-    }
-    const result = await response.json();
-    console.log(result); // Array of messages: [{ id: 1, role: "user", parts: [...] }, ...]
-  } catch (e) {
-    console.error('Error fetching messages from /messages:', e);
-  }
-}
+- Python
+- Google Gemini API
+- google-genai SDK
+- REST API
 
-// Reset the chat history
-async function resetChat() {
-  try {
-    const response = await fetch('http://localhost:8000/messages', {
-      method: 'DELETE'
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to reset chat: HTTP ${response.status}`);
-    }
-    const result = await response.json();
-    console.log(result); // { message: "Chat history cleared" }
-  } catch (e) {
-    console.error('Error resetting chat at /messages:', e);
-  }
+---
+
+## Frontend
+
+- HTML5
+- CSS3
+- JavaScript
+
+---
+
+## Tools
+
+- Git
+- GitHub
+- VS Code
+
+---
+
+# 📁 Project Structure
+
+```
+gemini-chatbot/
+│
+├── server.py
+├── server_function_calling.py
+├── index.html
+├── requirements.txt
+├── .env.example
+├── README.md
+└── LICENSE
+```
+
+---
+
+# 🎯 Project Objectives
+
+This project was developed to:
+
+- Learn Google Gemini API integration
+- Understand REST API development
+- Build AI-powered web applications
+- Improve frontend user experience
+- Practice Git and GitHub workflows
+- Serve as a reusable chatbot backend for future applications
+
+---
+
+# ⭐ Key Highlights
+
+- Beginner-friendly codebase
+- RESTful architecture
+- Easy to integrate with any frontend
+- Responsive UI
+- Improved user experience
+- Production-ready project structure
+- Open-source and customizable
+
+---
+
+# ⚙️ Installation
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/Pushpa2-ai/gemini-chatbot.git
+```
+
+Move into the project directory.
+
+```bash
+cd gemini-chatbot
+```
+
+---
+
+## 2. Create a Virtual Environment (Recommended)
+
+### Windows
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+---
+
+## 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+The project uses the official **Google GenAI SDK** for communicating with Gemini models.
+
+---
+
+# 🔑 Environment Variables
+
+Create a `.env` file in the root directory.
+
+Example:
+
+```env
+SERVER_PORT=8000
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY
+```
+
+If you don't have a Gemini API key, simply leave it blank.
+
+```env
+GEMINI_API_KEY=
+```
+
+The application will automatically switch to mock responses for testing.
+
+---
+
+# ▶️ Running the Project
+
+Start the chatbot server:
+
+```bash
+python server.py
+```
+
+For the Function Calling version:
+
+```bash
+python server_function_calling.py
+```
+
+Once the server starts successfully, open your browser:
+
+```
+http://localhost:8000
+```
+
+You can now start chatting with Gemini.
+
+---
+
+# 📡 REST API Endpoints
+
+## Send Message
+
+**POST**
+
+```
+/chat
+```
+
+Example Request
+
+```json
+{
+    "text":"Hello Gemini!"
 }
 ```
 
-## Web Interface
+---
 
-A simple web interface is available at `http://localhost:8000/`:
-- Type a message in the input field and click **Send** (or press Enter) to chat with the bot.
-- View the conversation history in the chat window.
-- Click **Reset Chat** to clear the conversation history.
+## Get Conversation History
 
-> [!NOTE]  
-> To access the web interface from other devices (e.g., a smartphone or tablet) on the same Wi-Fi or local network, replace `localhost` with your computer’s IP address (e.g., `http://192.168.1.100:8000/`).  
-> To find your IP address:  
-> - On Linux/macOS: Run `ifconfig` or `ip addr` in the terminal.  
-> - On Windows: Run `ipconfig` in Command Prompt.  
-> Ensure port 8000 is allowed through your firewall settings.
+**GET**
 
-## Gemini API
-
-This project uses Gemini's basic [text generation](https://ai.google.dev/gemini-api/docs/text-generation) feature. The SDK also supports [multi-turn conversations (chat)](https://ai.google.dev/gemini-api/docs/text-generation#multi-turn-conversations), but we're not using it here to keep things simple and focused on core concepts.
-
-### API Key Setup
-You can generate a free Gemini API key from [Google's AI Studio](https://aistudio.google.com/apikey). The key gives access to all available models with [rate limits](https://ai.google.dev/gemini-api/docs/rate-limits), which are sufficient for testing. If you don’t have an API key, the server uses mock responses, so you can still try the chatbot.
-
-### Configuration Details
-The project uses the following configuration for the Gemini API:
-
-- **Model**: `gemini-2.5-flash` (select from [available models](https://ai.google.dev/gemini-api/docs/models)).
-- **Temperature**: `0.5` — Controls response randomness. A lower value (e.g., `0.1`) makes responses deterministic (same prompt, same reply), while a higher value adds variety, enhancing the chatbot's conversational feel.
-- **Thinking Budget**: `0` — Disabled, as advanced reasoning isn't required for this use case.
-- **System Instruction**: Defines the chatbot's personality as a "friendly cat assistant" with a clear, concise, and playful tone. Customize this to adjust the chatbot's behavior.
-
-Example configuration in Python:
-
-```python
-client = genai.Client(api_key=api_key)
-return {
-    'client': client,
-    'model': 'gemini-2.5-flash',
-    'config': types.GenerateContentConfig(
-        temperature=0.5,
-        thinking_config=types.ThinkingConfig(thinking_budget=0),
-        system_instruction=[
-            types.Part.from_text(
-                text="You are a friendly cat assistant. You communicate in a clear and concise way while keeping a light cat-like personality—curious, playful, and helpful."
-            ),
-        ],
-}
+```
+/messages
 ```
 
-### Function Calling
+Returns the complete conversation.
 
-Function calling lets the chatbot trigger actions (like fetching weather data) based on user input. To keep things simple, the server with function calling is separate, so you can compare it with the basic server and learn step-by-step.
+---
 
-#### Running the Server with Function Calling
-Start the server with function calling using:
+## Reset Conversation
 
-```sh
-python3 server_function_calling.py
+**DELETE**
+
+```
+/messages
 ```
 
-For details on function calling, check the [Gemini API function calling documentation](https://ai.google.dev/gemini-api/docs/function-calling?example=weather).
+Deletes all stored messages.
 
-#### Defining Functions
-Functions are defined using a [JSON schema](https://json-schema.org/understanding-json-schema/basics). Below is an example for a `get_weather` function:
+---
 
-```javascript
-weather_function = {
-    "name": "get_weather",
-    "description": "Gets the weather forecast for a given city and date.",
-    "parameters": {
-        "type": "object",
-        "properties": {
-            "location": {
-                "type": "string",
-                "description": "The city name, e.g., 'San Francisco'",
-            },
-            "date": {
-                "type": "string",
-                "description": "The date in YYYY-MM-DD format, e.g., '2025-09-01'",
-            },
-        },
-        "required": ["location", "date"],
-    },
-}
+# 💻 API Testing
+
+Using **cURL**
+
+### Send a Message
+
+```bash
+curl -X POST ^
+-H "Content-Type: application/json" ^
+-d "{\"text\":\"Hello\"}" ^
+http://localhost:8000/chat
 ```
 
-**Tips for Writing Functions**:
-- Use **clear names and descriptions** to make the function’s purpose obvious.
-- Specify **properties** and their descriptions, including examples where possible.
-- Decide which properties are **required** (e.g., `location` and `date` above) or optional, based on the function’s needs.
-- Check out additional examples:
-  - `trivia_function`: A function with **no arguments**, useful for instant actions like generating trivia.
-  - `quiz_function`: A function with **optional arguments**, ideal for flexible queries.
+---
 
-#### How It Works
-In this project, functions return **mock responses** to simulate real-world actions (e.g., calling a weather API). In production, you’d replace these with actual API calls or custom logic.
+### Fetch Messages
 
-The server supports:
-- **Parallel function calling**: Handling multiple function calls in a single response.
-- **Subsequent function calls**: If a response isn’t sufficient, the model may call the same function again or trigger a different one. This is managed in the `process_gemini_response` function using recursion, with a limit of `MAX_CALLS = 7` to prevent excessive calls.
+```bash
+curl http://localhost:8000/messages
+```
 
+---
 
-## Thread Safety Note
+### Clear Chat
 
-The server stores messages in memory, shared across all users. This means multiple users accessing the server simultaneously may see each other’s messages. For a production server, you’d need per-user sessions or a database, but this is kept simple for learning purposes. To explore thread safety, you can look into Python’s `threading.Lock` or external storage solutions.
+```bash
+curl -X DELETE http://localhost:8000/messages
+```
 
-## Troubleshooting
+---
 
-- **Server won’t start**: If port 8000 is in use, edit `.env` to set a different `SERVER_PORT` (e.g., `SERVER_PORT=8001`) and restart.
-- **No Gemini responses**: Ensure `GEMINI_API_KEY` is set in `.env`. If left blank, the server uses mock replies.
-- **Web interface errors**: Check that `index.html` is in the same directory as `server.py` and that the server is running.
+# 🌐 Access from Other Devices
 
-## License
+To access the chatbot from another device connected to the same network:
 
-This project is licensed under the MIT License. See the [LICENSE](/LICENSE) file for details.
+Replace
 
+```
+http://localhost:8000
+```
+
+with
+
+```
+http://YOUR_LOCAL_IP:8000
+```
+
+Example
+
+```
+http://192.168.1.100:8000
+```
+
+On Windows, find your IP address:
+
+```bash
+ipconfig
+```
+
+On Linux/macOS:
+
+```bash
+ifconfig
+```
+
+or
+
+```bash
+ip addr
+```
+
+---
+
+# 📂 Folder Structure
+
+```
+gemini-chatbot
+│
+├── server.py
+├── server_function_calling.py
+├── index.html
+├── requirements.txt
+├── .env.example
+├── .env
+├── README.md
+└── LICENSE
+```
+
+---
+
+# 🧠 How It Works
+
+1. User enters a prompt.
+2. The frontend sends the request to the Python REST API.
+3. The server communicates with Google Gemini.
+4. Gemini generates a response.
+5. The response is returned to the frontend.
+6. The chat history is updated and displayed instantly.
+
+```
+User
+   │
+   ▼
+Frontend (HTML + JavaScript)
+   │
+   ▼
+Python REST API
+   │
+   ▼
+Google Gemini API
+   │
+   ▼
+Frontend UI
+```
+
+---
+
+# 🌟 UI & User Experience Enhancements
+
+This version extends the original project with several usability and interface improvements to provide a cleaner and more user-friendly chatting experience.
+
+## 🌙 Dark Mode
+
+A built-in dark theme allows users to switch between light and dark modes for a more comfortable viewing experience.
+
+**Benefits**
+
+- Better readability in low-light environments
+- Improved modern UI appearance
+- One-click theme switching
+
+---
+
+## 📋 Copy AI Response
+
+Each AI response includes a **Copy** button.
+
+Users can instantly copy the generated response to the clipboard without manually selecting the text.
+
+---
+
+## 💬 ChatGPT-style Chat Interface
+
+The chat interface has been redesigned with modern chat bubbles.
+
+### User Messages
+
+- Right aligned
+- Blue background
+- White text
+
+### AI Messages
+
+- Left aligned
+- Light background
+- Easy to distinguish from user messages
+
+---
+
+## ⏳ Thinking Status
+
+Instead of waiting silently, users now see
+
+```
+🤖 Gemini is thinking...
+```
+
+This provides immediate feedback after sending a prompt and improves the overall user experience.
+
+---
+
+## 📥 Download Chat History
+
+Users can download the complete conversation as a plain text file.
+
+Useful for:
+
+- Saving conversations
+- Documentation
+- Sharing responses
+- Future reference
+
+---
+
+## 🕒 Message Timestamps
+
+Every chat message displays its timestamp, making conversations easier to follow.
+
+---
+
+## 📜 Auto-scroll Optimization
+
+Whenever a new message is received, the chat automatically scrolls to the latest message.
+
+This creates a smoother messaging experience similar to modern chat applications.
+
+---
+
+# ⚙️ Gemini Configuration
+
+The chatbot uses Google's **Gemini 2.5 Flash** model for fast and efficient text generation.
+
+Current configuration includes:
+
+| Setting | Value |
+|---------|-------|
+| Model | Gemini 2.5 Flash |
+| Temperature | 0.5 |
+| Thinking Budget | 0 |
+| Response Type | Text Generation |
+
+The temperature is configured to balance creativity and response consistency.
+
+---
+
+# 🔄 Function Calling Support
+
+The project also includes a separate server implementation demonstrating **Gemini Function Calling**.
+
+Run it using:
+
+```bash
+python server_function_calling.py
+```
+
+This implementation serves as a learning example for developers who want to understand how Gemini can invoke external functions and APIs.
+
+---
+
+# ⚡ Performance
+
+- Lightweight Python backend
+- Fast Gemini responses
+- Minimal frontend
+- Low memory usage
+- RESTful architecture
+- Easy deployment
+
+---
+
+# 🛠 Customization
+
+You can easily customize the chatbot by modifying:
+
+### System Prompt
+
+Change the chatbot personality.
+
+Examples:
+
+- Personal Assistant
+- Coding Assistant
+- Travel Guide
+- Medical Assistant
+- AI Tutor
+- Customer Support Bot
+
+---
+
+### Gemini Model
+
+You can switch to other supported Gemini models by changing the model name inside the server configuration.
+
+---
+
+### Frontend
+
+The UI can easily be extended with:
+
+- React
+- Vue
+- Angular
+- Flutter
+- React Native
+
+without changing the backend API.
+
+---
+
+# 🚀 Future Improvements
+
+Potential enhancements include:
+
+- Markdown rendering
+- Syntax highlighting for code blocks
+- Voice input
+- Text-to-speech
+- Chat search
+- Export as PDF
+- Database integration
+- User authentication
+- Persistent chat history
+- Docker support
+- Cloud deployment
+- Multi-user support
+
+---
+
+# 🐞 Troubleshooting
+
+## Server does not start
+
+- Verify Python is installed.
+- Ensure dependencies are installed.
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Gemini is not responding
+
+- Check your API key inside the `.env` file.
+- Restart the server after updating the key.
+
+---
+
+## Port already in use
+
+Change the port inside `.env`.
+
+Example
+
+```env
+SERVER_PORT=8001
+```
+
+---
+
+## Web page not loading
+
+Ensure:
+
+- `server.py` is running.
+- `index.html` exists in the project directory.
+- Browser is opened at:
+
+```
+http://localhost:8000
+```
+
+---
+
+# 📚 Learning Outcomes
+
+This project helped strengthen understanding of:
+
+- Python programming
+- REST API development
+- Google Gemini API integration
+- HTTP request handling
+- Frontend and backend communication
+- Environment variable management
+- Git and GitHub workflow
+- Modern UI enhancement techniques
+- JavaScript DOM manipulation
+- Open-source project customization
+
+---
+
+# 🤝 Contributing
+
+Contributions are welcome!
+
+If you have ideas for improving this project, feel free to:
+
+1. Fork the repository
+2. Create a new feature branch
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+3. Commit your changes
+
+```bash
+git commit -m "Add your feature"
+```
+
+4. Push the branch
+
+```bash
+git push origin feature/your-feature-name
+```
+
+5. Open a Pull Request
+
+Please ensure your code follows clean coding practices and is properly tested before submitting.
+
+---
+
+# 📜 License
+
+This project is distributed under the **MIT License**.
+
+You are free to:
+
+- Use
+- Modify
+- Share
+- Learn from
+
+this project under the terms of the MIT License.
+
+See the **LICENSE** file for more information.
+
+---
+
+# 🙏 Acknowledgements
+
+This project is based on the open-source project:
+
+**python-chatbot-server** by **supershaneski**
+
+The original project provided a lightweight REST API example for integrating Google's Gemini API.
+
+This repository extends the original implementation by introducing several UI improvements, enhanced usability, and a more polished user experience while preserving its educational purpose.
+
+Special thanks to the original author for making the project available to the open-source community.
+
+---
+
+# 👨‍💻 Author
+
+**Pushpa Kumari**
+
+### GitHub
+
+https://github.com/Pushpa2-ai
+
+### LinkedIn
+
+https://www.linkedin.com/in/pushpa-kumari-803226259/
+
+---
+
+# ⭐ If you like this project
+
+Please consider giving this repository a ⭐ on GitHub.
+
+It helps others discover the project and motivates future improvements.
+
+---
+
+# 📬 Contact
+
+If you have any questions, suggestions, or feedback, feel free to connect with me through GitHub or LinkedIn.
+
+I am always open to learning, collaboration, and discussing software development.
+
+---
+
+# 🚀 Roadmap
+
+Planned future improvements include:
+
+- Markdown rendering
+- Code syntax highlighting
+- Voice input (Speech-to-Text)
+- Text-to-Speech
+- Chat export as PDF
+- Persistent database storage
+- User authentication
+- Multi-user chat sessions
+- Docker deployment
+- Cloud deployment (Render/AWS)
+- Streaming AI responses
+- Mobile-responsive interface improvements
+
+---
+
+# 📊 Project Summary
+
+| Category | Details |
+|----------|----------|
+| Backend | Python |
+| AI Model | Google Gemini 2.5 Flash |
+| API Type | REST API |
+| Frontend | HTML, CSS, JavaScript |
+| Communication | HTTP |
+| Environment Variables | .env |
+| Version Control | Git & GitHub |
+
+---
+
+# 🌟 Why This Project?
+
+This project demonstrates practical skills in:
+
+- REST API development
+- AI integration using Google Gemini
+- Frontend and backend communication
+- JavaScript DOM manipulation
+- User interface enhancement
+- Environment variable management
+- Git version control
+- Open-source collaboration
+- API testing
+- Clean project organization
+
+It serves as a beginner-friendly yet extensible foundation for developers who want to explore AI-powered chatbot applications.
+
+---
+
+## Thank You ❤️
+
+Thank you for visiting this repository.
+
+If you found this project useful, consider giving it a ⭐ and sharing it with others.
+
+Happy Coding! 🚀
